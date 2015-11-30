@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- 用于强制获取焦点，防止进入时自动弹出输入法 -->
+    <Button
+        android:id="@+id/btn_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_call"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_alignTop="@+id/btn_start_video"
+        android:layout_alignLeft="@+id/edt_input_ip"
+        android:layout_alignStart="@+id/edt_input_ip" />
+
+    <Button
+        android:id="@+id/btn_hangup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_hangup"
+        android:layout_below="@+id/btn_call"
+        android:layout_alignLeft="@+id/btn_call"
+        android:layout_alignStart="@+id/btn_call" />
+
+    <EditText
+        android:id="@+id/edt_input_number1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:text="0606"
+        android:hint="@string/edt_input_number"
+        />
+
+    <EditText
+        android:id="@+id/edt_input_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/edt_input_number1"
+        android:layout_below="@+id/edt_input_number1"
+        android:ems="10"
+        android:inputType="number"
+        android:text="192.168.11.188"
+        android:hint="@string/edt_input_ip" />
+
+    <TextView
+        android:id="@+id/txt_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btn_call"
+        android:layout_below="@+id/edt_input_ip"
+        android:layout_marginTop="32dp"
+        android:text="@string/txt_state" />
+
+    <Button
+        android:id="@+id/btn_start_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_start_audio"
+        android:layout_alignTop="@+id/btn_hangup"
+        android:layout_alignLeft="@+id/btn_start_video"
+        android:layout_alignStart="@+id/btn_start_video" />
+    <Button
+        android:id="@+id/btn_start_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_start_video"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/edt_input_ip"
+        android:layout_alignEnd="@+id/edt_input_ip" />
+</RelativeLayout>

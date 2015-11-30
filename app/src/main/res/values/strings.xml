@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">qsaTalk</string>
+    <string name="btn_call">呼叫</string>
+    <string name="btn_hangup">挂断</string>
+    <string name="txt_state">通话状态</string>
+    <string name="edt_input_ip">请输入IP地址</string>
+    <string name="edt_input_number">请输入房号</string>
+    <string name="btn_start_audio">开始录音</string>
+    <string name="btn_start_video">开始视频</string>
+</resources>

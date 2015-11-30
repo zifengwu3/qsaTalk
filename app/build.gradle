@@ -1,0 +1,58 @@
+apply plugin: 'com.android.model.application'
+
+model {
+    android {
+        compileSdkVersion = 23
+        buildToolsVersion = "23.0.2"
+
+        defaultConfig.with {
+            applicationId = "com.qsatalk"
+            minSdkVersion.apiLevel = 8
+            targetSdkVersion.apiLevel = 23
+            versionCode = 1
+            versionName = "1.0"
+        }
+    }
+
+    android.ndk {
+        moduleName = "talk_qsa"
+        ldLibs.addAll(["android", "log"])
+        //CFlags.addAll(["-I${file("src/main/jni/hellojni")}".toString()])
+    }
+
+    android.sources {
+        main {
+            jni {
+                source {
+                    srcDirs 'src/main/jni'
+                }
+            }
+        }
+    }
+
+    android.buildTypes {
+        release {
+            minifyEnabled = false
+            proguardFiles.add(file('proguard-rules.pro'))
+        }
+    }
+
+    android.productFlavors {
+        create("arm7") {
+            ndk.abiFilters.add("armeabi-v7a")
+        }
+        create("arm") {
+            ndk.abiFilters.add("armeabi")
+        }
+        // for detailed abiFilter descriptions, refer to "Supported ABIs" @
+        // https://developer.android.com/ndk/guides/abis.html#sa
+
+        // build one including all cpu architectures
+        create("all")
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.1.1'
+}
