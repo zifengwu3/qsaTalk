@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "log_jni.h"
+#include "../include/log_jni.h"
 
 #define _Included_Jni_Load
-#include "jni_load.h"
+#include "../jni_load.h"
 
 #include "code_c_in_java.h"
 

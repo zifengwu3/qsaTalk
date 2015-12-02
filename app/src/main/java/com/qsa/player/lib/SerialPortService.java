@@ -104,7 +104,6 @@ public class SerialPortService implements ISerialPortService {
 
 			this.ac = ac;
 			Log.e("now_state", "________________开启串口");
-			// new File("/dev/ttyS3");
 			mSerialPort = new SerialPort(new File("/dev/ttyS3"), 9600, 0);// COM0，波特率9600
 			mOutputStream = mSerialPort.getOutputStream();
 			mInputStream = mSerialPort.getInputStream();
@@ -314,7 +313,6 @@ public class SerialPortService implements ISerialPortService {
 				.getCheckValue(serialportContent);
 
 		write(serialportContent);
-
 		SerialPortSupport.printHexString(serialportContent);
 
 	}
