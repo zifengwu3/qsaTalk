@@ -17,7 +17,10 @@ model {
     android.ndk {
         moduleName = "talk_qsa"
         ldLibs.addAll(["android", "log"])
-        //CFlags.addAll(["-I${file("src/main/jni/hellojni")}".toString()])
+        CFlags.addAll(["-I${file("src/main/jni/test")}".toString()])
+        CFlags.addAll(["-I${file("src/main/jni/include")}".toString()])
+        CFlags.addAll(["-I${file("src/main/jni/qsa_talk")}".toString()])
+        CFlags.addAll(["-I${file("src/main/jni/qsa_485")}".toString()])
     }
 
     android.sources {

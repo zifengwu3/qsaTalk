@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "log_jni.h"
+#include "../include/log_jni.h"
 #include "code_java_in_c.h"
 
 #define JNICALLBACK_CLASS "com/qsatalk/jniLoad"
