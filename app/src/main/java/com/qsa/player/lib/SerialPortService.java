@@ -1,38 +1,18 @@
 package com.qsa.player.lib;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 import java.security.InvalidParameterException;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.alibaba.fastjson.serializer.CharsetCodec;
-import com.ivsign.android.IDCReader.IDCReaderSDK;
-import com.qsa.common.util.LogUtil;
-import com.qsa.qsasecurity.MainActivity;
-
-import android.R.array;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
-import android.util.Base64;
 import android.util.Log;
 
 public class SerialPortService implements ISerialPortService {
@@ -125,7 +105,7 @@ public class SerialPortService implements ISerialPortService {
 			this.ac = ac;
 			Log.e("now_state", "________________开启串口");
 			// new File("/dev/ttyS3");
-			mSerialPort = new SerialPort(new File("/dev/ttyS3"), 115200, 0);// COM0，波特率9600
+			mSerialPort = new SerialPort(new File("/dev/ttyS3"), 9600, 0);// COM0，波特率9600
 			mOutputStream = mSerialPort.getOutputStream();
 			mInputStream = mSerialPort.getInputStream();
 
@@ -146,9 +126,7 @@ public class SerialPortService implements ISerialPortService {
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-
 						if (!ToolsParser.getShareBoolean(ac, "mcu_flag")) {
-
 							set_routing_inspection_with_A20_updata(2);
 
 						}
@@ -248,6 +226,7 @@ public class SerialPortService implements ISerialPortService {
 		this.write(serialportContent);
 
 	}
+
 
 	@Override
 	public void set_nfc_changer(int Mode) {
@@ -527,7 +506,7 @@ public class SerialPortService implements ISerialPortService {
 
 			if (hadGetLength >= packLength) // 收到包的长度大于包内数据长度
 			{
-				LogUtil.i(TAG, "======包接收完整===");
+				Log.i(TAG, "======包接收完整===");
 				iscomplete = true;
 				receiveData = new byte[packLength];
 				System.arraycopy(packageBuf, 0, receiveData, 0, packLength);
@@ -538,7 +517,7 @@ public class SerialPortService implements ISerialPortService {
 		}
 		for (int i = 0; i < size; i++) {
 			if (buffer[i] == (byte) 0xAD) {
-				LogUtil.v(TAG, "找到匹配的起始位");
+				Log.v(TAG, "找到匹配的起始位");
 				packLength = SerialPortSupport.getCount(new byte[] {
 						buffer[i + 1], buffer[i + 2] });
 				// 判断指定长度是否大于实际有效包的的长度
@@ -546,7 +525,7 @@ public class SerialPortService implements ISerialPortService {
 				if (packLength > relength) {
 					// 包还未接收完整
 					timeID_a = System.currentTimeMillis();
-					LogUtil.i(TAG, "======包未接收完整 包长度" + packLength + "＝＝＝＝");
+					Log.i(TAG, "======包未接收完整 包长度" + packLength + "＝＝＝＝");
 
 					iscomplete = false;
 					System.arraycopy(buffer, i, packageBuf, 0, relength);
@@ -556,7 +535,7 @@ public class SerialPortService implements ISerialPortService {
 				if (packLength <= 500 && packLength >= 7) {
 
 				} else {
-					LogUtil.e(TAG, "读取数据长度有问题");
+					Log.e(TAG, "读取数据长度有问题");
 					return;
 				}
 				receiveData = new byte[packLength];
@@ -733,7 +712,7 @@ public class SerialPortService implements ISerialPortService {
 						break;
 					case 0x1C:
 						Log.i(TAG, "get security info===============");
-						Deal_security(value);
+						//Deal_security(value);
 						break;
 					}
 
@@ -930,6 +909,7 @@ public class SerialPortService implements ISerialPortService {
 
 	ByteArrayOutputStream baos;
 
+    /*
 	private void Deal_security(byte[] value) {
 
 		// TODO Auto-generated method stub
@@ -960,7 +940,7 @@ public class SerialPortService implements ISerialPortService {
 			intent.putExtra("INFODRCT", decPart); // 门内外标志位
 			ac.sendBroadcast(intent);
 			timeID_b = System.currentTimeMillis();
-			LogUtil.v(TAG, "获取到身份证信息  用时： " + (timeID_b - timeID_a) + " ms");
+			Log.v(TAG, "获取到身份证信息  用时： " + (timeID_b - timeID_a) + " ms");
 
 		}
 		if (crtPackages == allPackages - 1) {
@@ -975,7 +955,7 @@ public class SerialPortService implements ISerialPortService {
 				intent.putExtra("PICTUREBYTE", picture64tostring);
 				ac.sendBroadcast(intent);
 				timeID_b = System.currentTimeMillis();
-				LogUtil.v(TAG, "身份证信息获取完毕  用时： " + (timeID_b - timeID_a)
+				Log.v(TAG, "身份证信息获取完毕  用时： " + (timeID_b - timeID_a)
 						+ " ms");
 			}
 			try {
@@ -1022,6 +1002,7 @@ public class SerialPortService implements ISerialPortService {
 		}
 		return Readflage;
 	}
+	*/
 
 	// 字节转int
 	public int byteToint(byte b[]) {
@@ -1052,6 +1033,7 @@ public class SerialPortService implements ISerialPortService {
 		SerialPortService.getInstance().write(now);
 	}
 
+    /*
 	private void parseSecurityData(byte decPart, byte[] byteArray) {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "------" + byteArray.length + "   ");
@@ -1161,6 +1143,7 @@ public class SerialPortService implements ISerialPortService {
 		// new String(data, )
 
 	}
+	*/
 
 	public byte[] getIbyte(int length) {
 

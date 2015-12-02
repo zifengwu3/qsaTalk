@@ -3,12 +3,14 @@ package com.qsatalk;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 //import android.app.Activity;
+import android.view.KeyEvent;
 import android.widget.TextView;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.View;
 import android.view.View.OnClickListener;
+import com.qsa.player.lib.SerialPortService;
 
 public class Call extends AppCompatActivity implements OnClickListener {
 
@@ -22,6 +24,8 @@ public class Call extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call);
+
+        SerialPortService.getInstance().open(this);
 
         init_param_view();
         init_a20_fm2018_param();
@@ -39,6 +43,25 @@ public class Call extends AppCompatActivity implements OnClickListener {
         start_video_btn.setOnClickListener(this);
         start_audio_btn.setOnClickListener(this);
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        Log.v(TAG, "kecode " + (keyCode - 7));
+        switch (keyCode - 7) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 9:
+                break;
+            default:
+                break;
+        }
+
+        return false;
+    }
+
 
     @Override
     public void onClick(View view) {

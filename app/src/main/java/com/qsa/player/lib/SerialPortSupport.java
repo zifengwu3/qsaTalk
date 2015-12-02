@@ -67,11 +67,9 @@ public class SerialPortSupport {
 
 			}
 			str += value;
-
 		}
 
 		return Integer.parseInt(str, 16);
-
 	}
 
 	/***
@@ -103,19 +101,7 @@ public class SerialPortSupport {
 			checkValue += getUnsignedByte(data[i]);
 
 		}
-		// String str = Integer.toHexString(checkValue);
-		// if (checkValue > 255) {
-		//
-		// str = str.substring(str.length() - 2);
-		//
-		// }
-		// if (str.length() < 2) {
-		// str = "0" + str;
-		// }
 
-		// result = hexStringToBytes(str);
-
-		// return result;
 		return (byte) (checkValue % 256);
 	}
 
