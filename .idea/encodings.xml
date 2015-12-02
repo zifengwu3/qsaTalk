@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+<<<<<<< HEAD
     <file url="file://$PROJECT_DIR$/app/src/main/jni/qsa_talk/init.c" charset="GB2312" />
+=======
+    <file url="file://$PROJECT_DIR$/app/src/main/jni/qsa_talk/door26.c" charset="GBK" />
+>>>>>>> 02b6b2d10a3b7f9c0ddce51221234ed30506fe1c
   </component>
 </project>
