@@ -28,6 +28,10 @@ void timer_thread_task(void);
 int Init_Timer(void);
 int Uninit_Timer(void);
 
+extern void Talk_Call_Task(int uFlag, const char *call_addr, const char *call_ip);
+extern void Talk_Call_End_Task(void);
+extern void Talk_Call_TimeOut_Task(void);
+
 int Init_Timer(void) {
 	pthread_attr_t attr;
 	timer_thread_flag = 1;
@@ -83,7 +87,7 @@ void OnlineCheckFunc(void)
 					|| (Local.Status == 5) || (Local.Status == 6)
 					|| (Local.Status == 7) || (Local.Status == 8)
 					|| (Local.Status == 9) || (Local.Status == 10)) {
-				//Talk_Call_End_Task();
+				Talk_Call_End_Task();
 				//recv_Call_End(1);
 			}
 			Local.OnlineFlag = 0;
@@ -130,7 +134,7 @@ void TalkCtrlFunc(void)
             case 1:
             case 2:
                 if (Local.TimeOut > CALLTIMEOUT) {
-                    //Talk_Call_TimeOut_Task();
+                    Talk_Call_TimeOut_Task();
                     //MsgLAN2CCCallTimeOut();
                 }
                 break;
@@ -139,7 +143,7 @@ void TalkCtrlFunc(void)
                 sprintf(strtime, "%02d:%02d", Local.TimeOut / INTRPERSEC / 60,
                         (Local.TimeOut / INTRPERSEC) % 60);
                 if (Local.TimeOut > TALKTIMEOUT) {
-                    //Talk_Call_End_Task();
+                    Talk_Call_End_Task();
                     //recv_Call_End(1);
                     Local.OnlineFlag = 0;
                     if (DebugMode == 1) {
