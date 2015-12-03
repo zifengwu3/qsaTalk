@@ -23,12 +23,19 @@ pthread_mutex_t audio_lock;
 
 extern int InitArpSocket(void);
 extern int CloseArpSocket(void);
+extern void SendFreeArp(void);
 
 extern int Init_Timer(void);
 extern int Uninit_Timer(void);
 
 extern void AddMultiGroup(int m_Socket, char *McastAddr);
 extern void InitRecVideo(void);
+
+extern int InitUdpSocket(short lPort);
+extern void CloseUdpSocket(void);
+extern int Init_Udp_Send_Task(void);
+extern int Uninit_Udp_Send_Task(void);
+
 //---------------------------------------------------------------------------
 int qsa_init_main_task(int argc, char *argv[]);
 void qsa_init_audio_task(void);
@@ -87,8 +94,8 @@ void qsa_init_audio_task(void) {
 		TempAudioNode_h = (TempAudioNode1 *) init_audionode();
 	}
 
-	//InitAudioParam();
-	//InitRecVideo();
+	InitAudioParam();
+	InitRecVideo();
      */
 }
 
@@ -96,16 +103,15 @@ void qsa_uninit_task(void) {
 
 	Uninit_Timer();
 
-    //Uninit_Udp_Send_Task();
+    Uninit_Udp_Send_Task();
 
 	CloseArpSocket();
-	//CloseUdpSocket();
+	CloseUdpSocket();
 
 }
 
 void qsa_init_udp_task(void) {
 
-    /*
 	if (InitUdpSocket(LocalVideoPort) == 0) {
 		LOGD("can't create video socket.\n\r");
 	}
@@ -113,7 +119,6 @@ void qsa_init_udp_task(void) {
 	Init_Udp_Send_Task();
 
 	SendFreeArp();
-     */
 }
 //---------------------------------------------------------------------------
 
