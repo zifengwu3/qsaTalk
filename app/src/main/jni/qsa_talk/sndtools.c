@@ -127,30 +127,30 @@ void InitAudioParam(void) //��ʼ����Ƶ����
 	char acVolSet[128] = { 0x0 };
 #if 0
 	//set a IPGA volume, from -27 ~ +36 dB
-	P_Debug("0000\n");
+	LOGD("0000\n");
 	system("echo 0 > /proc/asound/adda300_RIV");//6
-	P_Debug("1111\n");//6
+	LOGD("1111\n");//6
 	system("echo 0 > /proc/asound/adda300_LIV");
-	P_Debug("1112\n");
+	LOGD("1112\n");
 	//set a digital input volume, from -50 ~ +30 dB
 	sprintf(acVolSet,"echo %d > /proc/asound/adda300_LADV",g_stIdbtCfg.iInputVol);
 	system(acVolSet);
 	//system("echo 7 > /proc/asound/adda300_LADV");
-	P_Debug("1113\n");
+	LOGD("1113\n");
 	system("echo 7 > /proc/asound/adda300_RADV");
-	P_Debug("1114\n");
+	LOGD("1114\n");
 	//set digital output volume, from 0 ~ -40 dB
 	system("echo -30 > /proc/asound/adda300_LDAV");
-	P_Debug("1115\n");
+	LOGD("1115\n");
 	system("echo -30 > /proc/asound/adda300_RDAV");
 	//set speaker analog output gain, from -40 ~ +6 dB, this affect the final frontend output
 	sprintf(acVolSet,"echo %d > /proc/asound/adda300_SPV",g_stIdbtCfg.iOutputCallVol);
 	system(acVolSet);
-	P_Debug("1116\n");
+	LOGD("1116\n");
 	system("echo 0 > /proc/asound/adda300_input_mode input_mode");
-	P_Debug("1117\n");
+	LOGD("1117\n");
 	system("echo -6 > /proc/asound/adda300_ALCMIN");
-	P_Debug("1118\n");
+	LOGD("1118\n");
 	system("echo 1 > /proc/asound/adda300_BTL_mode");
 #endif
 }
@@ -179,7 +179,7 @@ int OpenSnd(int nWhich) {
 			if (devrecfd < 0)
 			{
 				devrecfd = -1;
-				P_Debug("**Snd**SipRecAudioOpen = 0,but open devrecfd failed******\n");
+				LOGD("**Snd**SipRecAudioOpen = 0,but open devrecfd failed******\n");
 				pthread_mutex_unlock(&audio_lock);
 				return 0;
 			}
@@ -207,16 +207,16 @@ int OpenSnd(int nWhich) {
 				//					{
 				//						printf("*****************ioctl devrecfd  SNDCTL_DSP_RESET ok\n");
 				//					}
-				P_Debug("**Snd**SipRecAudioOpen = 0,open devrecfd succeed******\n");
+				LOGD("**Snd**SipRecAudioOpen = 0,open devrecfd succeed******\n");
 			}
 		}
 		else
 		{
 			// devrecfd > 0
-			P_Debug("**Snd**SipRecAudioOpen = 0,but devrecfd > 0,warning:devrecfd is invalid******\n");
+			LOGD("**Snd**SipRecAudioOpen = 0,but devrecfd > 0,warning:devrecfd is invalid******\n");
 			close(devrecfd);
 			devrecfd = -1;
-			P_Debug("**Snd**SipRecAudioOpen = 0,but devrecfd > 0,so close devrecfd and set devrecfd = -1******\n");
+			LOGD("**Snd**SipRecAudioOpen = 0,but devrecfd > 0,so close devrecfd and set devrecfd = -1******\n");
 			pthread_mutex_unlock(&audio_lock);
 			return 0;
 		}
@@ -229,7 +229,7 @@ int OpenSnd(int nWhich) {
 			if (devplayfd < 0)
 			{
 				devplayfd = -1;
-				P_Debug("**Snd**SipPlayAudioOpen = 0,but open devplayfd failed******\n");
+				LOGD("**Snd**SipPlayAudioOpen = 0,but open devplayfd failed******\n");
 				pthread_mutex_unlock(&audio_lock);
 				return 0;
 			}
@@ -258,15 +258,15 @@ int OpenSnd(int nWhich) {
 				//						printf("*****************ioctl devplayfd  SNDCTL_DSP_RESET ok\n");
 				//					}
 
-				P_Debug("**Snd**SipPlayAudioOpen = 0,open devplayfd succeed******\n");
+				LOGD("**Snd**SipPlayAudioOpen = 0,open devplayfd succeed******\n");
 			}
 		}
 		else
 		{
-			P_Debug("**Snd**SipPlayAudioOpen = 0,but devplayfd > 0,warning:open devplayfd failed******\n");
+			LOGD("**Snd**SipPlayAudioOpen = 0,but devplayfd > 0,warning:open devplayfd failed******\n");
 			close(devplayfd);
 			devplayfd = -1;
-			P_Debug("**Snd**SipPlayAudioOpen = 0,but devplayfd > 0,so close devplayfd and set devplayfd = -1******\n");
+			LOGD("**Snd**SipPlayAudioOpen = 0,but devplayfd > 0,so close devplayfd and set devplayfd = -1******\n");
 			pthread_mutex_unlock(&audio_lock);
 			return 0;
 		}
@@ -274,7 +274,7 @@ int OpenSnd(int nWhich) {
 
 	//pthread_mutex_unlock(&audio_open_lock);
 	pthread_mutex_unlock(&audio_lock);
-	P_Debug("***********snd_open finished**********\n");
+	LOGD("***********snd_open finished**********\n");
 #endif
 	return 1;
 }
@@ -285,16 +285,16 @@ int OpenSnd(int nWhich) {
  */
 int CloseSnd(/* add by new version */int nWhich) {
 #if 0
-	P_Debug("***********snd_close begin********\n");
+	LOGD("***********snd_close begin********\n");
 	sprintf(Local.DebugInfo, " error = %d\n", errno);
-	P_Debug(Local.DebugInfo);
+	LOGD(Local.DebugInfo);
 
 	//pthread_mutex_lock(&audio_close_lock);
 	pthread_mutex_lock(&audio_lock);
 	if (nWhich == 1)
 	{
 		sprintf(Local.DebugInfo, "nWhich:1 CloseSnd::devrecfd = %d, devplayfd = %d\n", devrecfd, devplayfd);
-		P_Debug(Local.DebugInfo);
+		LOGD(Local.DebugInfo);
 		//close(devrecfd);
 		//devrecfd = 0;
 		if (SipRecAudioOpen == 0)
@@ -303,20 +303,20 @@ int CloseSnd(/* add by new version */int nWhich) {
 			{
 				if(close(devrecfd) == 0)
 				{
-					P_Debug("**snd**SipRecAudioOpen = 0,close(devrecfd) succeed***********************************\n");
+					LOGD("**snd**SipRecAudioOpen = 0,close(devrecfd) succeed***********************************\n");
 					devrecfd = -1;
 					SndRecAudioOpen = 0;
 				}
 				else
 				{
 					sprintf(Local.DebugInfo, "error = %d, Error Message is %s\n", errno, strerror(errno));
-					P_Debug(Local.DebugInfo);
+					LOGD(Local.DebugInfo);
 
 				}
 			}
 			else
 			{
-				P_Debug("**snd**SipRecAudioOpen = 0,but devrecfd < 0,warning: devrecfd is invalid!***************************\n");
+				LOGD("**snd**SipRecAudioOpen = 0,but devrecfd < 0,warning: devrecfd is invalid!***************************\n");
 				pthread_mutex_unlock(&audio_lock);
 				return 0;
 			}
@@ -326,14 +326,14 @@ int CloseSnd(/* add by new version */int nWhich) {
 			// SipRecAudioOpen == 1
 			if (devrecfd < 0)
 			{
-				P_Debug("**snd**SipRecAudioOpen = 1,but devrecfd < 0,warning: can't close devrecfd*******\n");
+				LOGD("**snd**SipRecAudioOpen = 1,but devrecfd < 0,warning: can't close devrecfd*******\n");
 				pthread_mutex_unlock(&audio_lock);
 				return 0;
 			}
 			else
 			{
 				SndRecAudioOpen = 0;
-				P_Debug("**snd**SipAudioOpen = 1 and devrecfd > 0, so the audio is occupied by oss,don't need to close the devrecfd!*****\n");
+				LOGD("**snd**SipAudioOpen = 1 and devrecfd > 0, so the audio is occupied by oss,don't need to close the devrecfd!*****\n");
 			}
 		}
 	}
@@ -346,21 +346,21 @@ int CloseSnd(/* add by new version */int nWhich) {
 				SyncPlay(); // ���������е���Ƶ��ݲ�����
 				if(close(devplayfd) == 0)
 				{
-					P_Debug("**snd**SipPlayAudioOpen = 0,close(devplayfd) succeed***********************************\n");
+					LOGD("**snd**SipPlayAudioOpen = 0,close(devplayfd) succeed***********************************\n");
 					devplayfd = -1;
 					SndPlayAudioOpen = 0;
-					P_Debug("**snd**SipPlayAudioOpen = 0,set SndPlayAudioOpen = 0***********************************\n");
+					LOGD("**snd**SipPlayAudioOpen = 0,set SndPlayAudioOpen = 0***********************************\n");
 				}
 				else
 				{
 					printf(" error = %d, Error Message is %s\n", errno, strerror(errno));
-					P_Debug(Local.DebugInfo);
+					LOGD(Local.DebugInfo);
 
 				}
 			}
 			else
 			{
-				P_Debug("**snd**SipPlayAudioOpen = 0,but devplayfd < 0,warning: devplayfd is invalid!***************************\n");
+				LOGD("**snd**SipPlayAudioOpen = 0,but devplayfd < 0,warning: devplayfd is invalid!***************************\n");
 				pthread_mutex_unlock(&audio_lock);
 				return 0;
 			}
@@ -370,15 +370,15 @@ int CloseSnd(/* add by new version */int nWhich) {
 			// SipPlayAudioOpen == 1
 			if (devplayfd < 0)
 			{
-				P_Debug("**snd**SipPlayAudioOpen = 1,but devplayfd < 0,warning: can't close devplayfd*******\n");
+				LOGD("**snd**SipPlayAudioOpen = 1,but devplayfd < 0,warning: can't close devplayfd*******\n");
 				pthread_mutex_unlock(&audio_lock);
 				return 0;
 			}
 			else
 			{
 				SndPlayAudioOpen = 0;
-				P_Debug("**snd**SipPlayAudioOpen = 1 and devplayfd > 0, so the audio is occupied by oss,don't need to close the devplayfd!*****\n");
-				P_Debug("**snd**set SndPlayAudioOpen = 0\n");
+				LOGD("**snd**SipPlayAudioOpen = 1 and devplayfd > 0, so the audio is occupied by oss,don't need to close the devplayfd!*****\n");
+				LOGD("**snd**set SndPlayAudioOpen = 0\n");
 			}
 		}
 	}
@@ -386,8 +386,8 @@ int CloseSnd(/* add by new version */int nWhich) {
 	//pthread_mutex_unlock(&audio_close_lock);
 	pthread_mutex_unlock(&audio_lock);
 	sprintf(Local.DebugInfo, " error = %d\n", errno);
-	P_Debug(Local.DebugInfo);
-	P_Debug("***********snd_close finished********\n");
+	LOGD(Local.DebugInfo);
+	LOGD("***********snd_close finished********\n");
 	return 1;
 #endif
 }
@@ -429,7 +429,7 @@ int SetFormat(int nWhich, int bits, int hz, int chn) {
 	// ���ò���ʱ������λ��       FIC8120ֻ֧��16λ
 	sprintf(Local.DebugInfo, "bits = %d, hz = %d, chn = %d, devfd = %d\n", bits,
 			hz, chn, devfd);
-	P_Debug(Local.DebugInfo);
+	LOGD(Local.DebugInfo);
 	if (devfd <= 0)
 		return -1;
 #if 0
@@ -441,9 +441,9 @@ int SetFormat(int nWhich, int bits, int hz, int chn) {
 		arg = bits;
 		status = ioctl(devfd, SOUND_PCM_WRITE_BITS, &arg);
 		if (status == -1)
-			P_Debug("SOUND_PCM_WRITE_BITS ioctl failed\n");
+			LOGD("SOUND_PCM_WRITE_BITS ioctl failed\n");
 		if (arg != bits)
-			P_Debug("unable to set sample size\n");
+			LOGD("unable to set sample size\n");
 	}
 #endif
 
@@ -482,11 +482,11 @@ int SetFormat(int nWhich, int bits, int hz, int chn) {
 	ioctl(devfd, SNDCTL_DSP_GETBLKSIZE, &abuf_size);
 	if (DebugMode == 1) {
 		sprintf(Local.DebugInfo, "abuf_size= %d\n", abuf_size);
-		P_Debug(Local.DebugInfo);
+		LOGD(Local.DebugInfo);
 	}
 	if (abuf_size < 4 || abuf_size > 65536) {
 		sprintf(Local.DebugInfo, "Invalid audio buffers size %d\n", nWhich);
-		P_Debug(Local.DebugInfo);
+		LOGD(Local.DebugInfo);
 		exit(-1);
 	}
 
@@ -571,7 +571,7 @@ void audio_rec_deal_thread_func(void) {
 	struct talkdata1 talkdata;
 
 	if (DebugMode == 1)
-		P_Debug("don't create audio recv deal thread \n");
+		LOGD("don't create audio recv deal thread \n");
 	while (audio_rec_flag == 1) {
 		//�ȴ�ɼ��߳�����ݵ��ź�
 		sem_wait(&audiorecsem);
@@ -693,10 +693,10 @@ void audio_rec_thread_func(void) {
 		nullrecppcm[i] = 0;
 
 	if (DebugMode == 1) {
-		P_Debug("create audio recv thread \n");
+		LOGD("create audio recv thread \n");
 		sprintf(Local.DebugInfo, "********************audio_rec_flag=%d\n",
 				audio_rec_flag);
-		P_Debug(Local.DebugInfo);
+		LOGD(Local.DebugInfo);
 	}
 	gettimeofday(&tv, NULL);
 	nowtime = tv.tv_sec * 1000 + tv.tv_usec / 1000;
@@ -725,7 +725,7 @@ void audio_rec_thread_func(void) {
 
 //				if(dwSize == AUDIOBLK)
 //				{
-////					P_Debug("dwSize == 160\n");
+////					LOGD("dwSize == 160\n");
 //					memcpy((char *) (recbuf.buffer + recbuf.iput), tmpBuf, AUDIOBLK);
 //				}
 //				else
@@ -736,7 +736,7 @@ void audio_rec_thread_func(void) {
 		//printf("after record\n");
 		if (dwSize != AUDIOBLK) {
 //			sprintf(Local.DebugInfo, "AUDIOBLK != dwSize  %d, %d\n", AUDIOBLK, dwSize);
-//			P_Debug(Local.DebugInfo);
+//			LOGD(Local.DebugInfo);
 			continue;
 		} else {
 //			if(++iAudioCount  % 10 == 0)
@@ -759,7 +759,7 @@ void audio_rec_thread_func(void) {
 		if (recbuf.n < NMAX)
 			recbuf.n += AUDIOBLK;
 		else
-			P_Debug("rec.Buffer is full\n");
+			LOGD("rec.Buffer is full\n");
 
 		//����
 		//printf("************************audio_rec_lock unlock  try,  audio_rec_flag=(%d)\n", audio_rec_flag);
@@ -792,7 +792,7 @@ void audio_play_deal_thread_func(void) {
 	uint32_t dellostframeno;
 	uint32_t dellosttimestamp;
 	if (DebugMode == 1)
-		P_Debug("create audio play deal thread \n");
+		LOGD("create audio play deal thread \n");
 
 	while (audio_play_flag == 1) {
 		//�ȴ�ɼ��߳�����ݵ��ź�, ������
@@ -808,7 +808,7 @@ void audio_play_deal_thread_func(void) {
 			//�������ϵ�֡
 			tmp_audionode = search_audionode(TempAudioNode_h);
 //			sprintf(Local.DebugInfo, "Content.frameno = %d, Content.timestamp = %d \n", tmp_audionode->Content.frameno, tmp_audionode->Content.timestamp);
-//			P_Debug(Local.DebugInfo);
+//			LOGD(Local.DebugInfo);
 			if (tmp_audionode != NULL) {
 				playbuf.frameno[playbuf.iput / AUDIOBLK] =
 						tmp_audionode->Content.frameno;
@@ -879,20 +879,20 @@ void audio_play_thread_func(void) {
 			curr_audio_timestamp = playbuf.timestamp[playbuf.iget / AUDIOBLK];
 
 //			sprintf(Local.DebugInfo, "audio_play_thread_func: pcm_play = %d\n", pcm_play);
-//								P_Debug(Local.DebugInfo);
+//								LOGD(Local.DebugInfo);
 			//dwSize = Play((char *) (playbuf.buffer + playbuf.iget), AUDIOBLK);
 
 			//AudioPlay((char *) (playbuf.buffer + playbuf.iget), AUDIOBLK);
 
-			dwSize = play_pcm(pcm_play, (char *) (playbuf.buffer + playbuf.iget), AUDIOBLK);		//modify by xuqd
+			//dwSize = play_pcm(pcm_play, (char *) (playbuf.buffer + playbuf.iget), AUDIOBLK);		//modify by xuqd
 
 			LOGD("play thread dwSize = %d", dwSize);
 //			sprintf(Local.DebugInfo, "audio_play_thread_func: dwSize = %d\n", dwSize);
-//					P_Debug(Local.DebugInfo);
+//					LOGD(Local.DebugInfo);
 //			if (dwSize != AUDIOBLK)
 //			{
 //				sprintf(Local.DebugInfo, "dwSize = %d\n", dwSize);
-//				P_Debug(Local.DebugInfo);
+//				LOGD(Local.DebugInfo);
 //				continue;
 //			}
 
@@ -908,7 +908,7 @@ void audio_play_thread_func(void) {
 			if (playbuf.n >= dwSize) {
 				playbuf.n -= dwSize;
 			} else {
-				P_Debug("play2.Buffer is full\n");
+				LOGD("play2.Buffer is full\n");
 			}
 
 #if 0
@@ -932,7 +932,7 @@ void audio_play_thread_func(void) {
 
 //					sprintf(Local.DebugInfo, "audio jump_buf =%d , jump_tmp = %d, jump_frame = %d\n",
 //							jump_buf, jump_tmp, jump_frame);
-//					P_Debug(Local.DebugInfo);
+//					LOGD(Local.DebugInfo);
 
 					for (i = 0; i < jump_buf; i++) {
 						if ((playbuf.iget + AUDIOBLK) >= NMAX)
@@ -981,7 +981,7 @@ void StartRecAudio(void) {
 		//if (!OpenSnd(AUDIODSP))
 //		if(record_open(FMT8K, 1) == -1)        //modify by xuqd
 //		{
-//			P_Debug("******StartRecAudio()******Open record sound device error!\\n");
+//			LOGD("******StartRecAudio()******Open record sound device error!\\n");
 //			return;
 //		}
 #endif
@@ -993,7 +993,7 @@ void StartRecAudio(void) {
 //			iRecInitFlg++;
 		if(SndCardAudioRecordInit() == -1)
 		{
-			P_Debug("snd card init failed.");
+			LOGD("snd card init failed.");
 		}
 //		}
 #endif
@@ -1016,7 +1016,7 @@ void StartRecAudio(void) {
 		pthread_create(&audio_rec_deal_thread, &attr,
 				(void *) audio_rec_deal_thread_func, NULL);
 		if (audio_rec_deal_thread == 0) {
-			P_Debug("don't create audio recv deal thread \n");
+			LOGD("don't create audio recv deal thread \n");
 			pthread_attr_destroy(&attr);
 			return;
 		}
@@ -1025,13 +1025,13 @@ void StartRecAudio(void) {
 				NULL);
 		pthread_attr_destroy(&attr);
 		if (audio_rec_thread == 0) {
-			P_Debug("don't create audio recv thread \n");
+			LOGD("don't create audio recv thread \n");
 			return;
 		}
-		P_Debug("StartRecAudio finished\n");
+		LOGD("StartRecAudio finished\n");
 	} else {
 		if (DebugMode == 1)
-			P_Debug("repeat AudioRecIsStart\n");
+			LOGD("repeat AudioRecIsStart\n");
 	}
 }
 //---------------------------------------------------------------------------
@@ -1039,10 +1039,10 @@ void StopRecAudio(void) {
 	int delaytime;
 	delaytime = 40;
 //	sprintf(Local.DebugInfo,"AudioRecIsStart=%d\n", AudioRecIsStart);
-//	P_Debug(Local.DebugInfo);
+//	LOGD(Local.DebugInfo);
 
 	if (AudioRecIsStart == 1) {
-		P_Debug("cccccccccc");
+		LOGD("cccccccccc");
 		ref_time.tv_sec = 0; //��ʼʱ���
 		ref_time.tv_usec = 0;
 
@@ -1083,7 +1083,7 @@ void StopRecAudio(void) {
 #endif
 	} else {
 		if (DebugMode == 1)
-			P_Debug("repeat AudioRecIsStart\n");
+			LOGD("repeat AudioRecIsStart\n");
 	}
 }
 //---------------------------------------------------------------------------
@@ -1091,7 +1091,7 @@ static int iPlayInitFlg = 0;
 void StartPlayAudio(void) {
 	pthread_attr_t attr;
 	int i;
-	P_Debug("StartPlayAudio \n");
+	LOGD("StartPlayAudio \n");
 	if (AudioPlayIsStart == 0) {
 		TimeStamp.OldCurrVideo = 0; //��һ�ε�ǰ��Ƶʱ��
 		TimeStamp.CurrVideo = 0;
@@ -1102,7 +1102,7 @@ void StartPlayAudio(void) {
 		PlayPcmTotalNum = 0; //һ��������Ƶ���ܵķ��ֵ
 		//��Ƶ
 		//if (!OpenSnd(AUDIODSP1))
-		pcm_play = play_open(FMT8K, 1);		//modify xuqd
+		//pcm_play = play_open(FMT8K, 1);		//modify xuqd
 		sprintf(Local.DebugInfo, "StartPlayAudio: pcm_play = %d", pcm_play);
 		LOGD(Local.DebugInfo);
 		if(pcm_play == NULL) {
@@ -1137,7 +1137,7 @@ void StartPlayAudio(void) {
 		pthread_create(&audio_play_deal_thread, &attr,
 				(void *) audio_play_deal_thread_func, NULL);
 		if (audio_play_deal_thread == 0) {
-			P_Debug("don't create audio play deal thread \n");
+			LOGD("don't create audio play deal thread \n");
 			pthread_attr_destroy(&attr);
 			return;
 		}
@@ -1145,12 +1145,12 @@ void StartPlayAudio(void) {
 				(void *) audio_play_thread_func, NULL);
 		pthread_attr_destroy(&attr);
 		if (audio_play_thread == 0) {
-			P_Debug("don't create audio play thread \n");
+			LOGD("don't create audio play thread \n");
 			return;
 		}
 	} else {
 		if (DebugMode == 1)
-			P_Debug("repeat AudioPlayStart \n");
+			LOGD("repeat AudioPlayStart \n");
 	}
 }
 
@@ -1159,7 +1159,7 @@ void StopPlayAudio(void) {
 	int delaytime;
 	delaytime = 40;
 	sprintf(Local.DebugInfo, "AudioPlayStart=%d\n", AudioPlayIsStart);
-	P_Debug(Local.DebugInfo);
+	LOGD(Local.DebugInfo);
 
 	if (AudioPlayIsStart == 1) {
 		AudioPlayIsStart = 0;
@@ -1190,7 +1190,7 @@ void StopPlayAudio(void) {
 		usleep(delaytime * 1000);
 		// �ȴ�طŽ���
 		//SyncPlay();
-		play_close();				//modify by xuqd
+		//play_close();				//modify by xuqd
 		//CloseSnd(AUDIODSP1); del by zlin
 		sem_destroy(&audioplaysem);
 		sem_destroy(&audiorec2playsem);
@@ -1214,7 +1214,7 @@ void StartPlayWav(char *srcname, int PlayFlag) //0 ���β���  1 ѭ�
 	sprintf(acVolSet,"echo %d > /proc/asound/adda300_SPV",g_stIdbtCfg.iOutputPlayWavVol); //���ÿ���������С
 	system(acVolSet);
 	sprintf(Local.DebugInfo, "XT debug LOCK_AUDIO_OUT_VOL is :%s", acVolSet);
-	P_Debug(Local.DebugInfo);
+	LOGD(Local.DebugInfo);
 
 #endif
 #if 1
@@ -1224,7 +1224,7 @@ void StartPlayWav(char *srcname, int PlayFlag) //0 ���β���  1 ѭ�
 	int bytes_read;
 	//�鿴��Ƶ�豸�Ƿ����
 	sprintf(Local.DebugInfo, "AudioPlayIsStart:%d\n", AudioPlayIsStart);
-	P_Debug(Local.DebugInfo);
+	LOGD(Local.DebugInfo);
 	// ���Դ��� add by xuqd
 	//AudioPlayIsStart = 1;
 
@@ -1232,7 +1232,7 @@ void StartPlayWav(char *srcname, int PlayFlag) //0 ���β���  1 ѭ�
 		AudioPlayIsStart = 1;
 		if ((fd = fopen(srcname, "rb")) == NULL) {
 			sprintf(Local.DebugInfo, "Open Error:%s\n", srcname);
-			P_Debug(Local.DebugInfo);
+			LOGD(Local.DebugInfo);
 			AudioPlayIsStart = 0;
 			return;
 		}
@@ -1302,7 +1302,7 @@ void StartPlayWav(char *srcname, int PlayFlag) //0 ���β���  1 ѭ�
 				|| (hWaveFileHeader.chFMT[1] != 'm')
 				|| (hWaveFileHeader.chFMT[2] != 't')
 				|| (hWaveFileHeader.chFMT[3] != ' ')) {
-			P_Debug("wav file format error\n");
+			LOGD("wav file format error\n");
 			fclose(fd);
 			AudioPlayIsStart = 0;
 			return;
@@ -1315,7 +1315,7 @@ void StartPlayWav(char *srcname, int PlayFlag) //0 ���β���  1 ѭ�
 		bytes_read = fread(wavbuf.buffer, hWaveFileHeader.dwDATALen, 1, fd);
 		if (bytes_read != 1) {
 			sprintf(Local.DebugInfo, "Read Error:%s\n", srcname);
-			P_Debug(Local.DebugInfo);
+			LOGD(Local.DebugInfo);
 			if (wavbuf.buffer != NULL) {
 				free(wavbuf.buffer);
 				wavbuf.buffer = NULL;
@@ -1330,7 +1330,7 @@ void StartPlayWav(char *srcname, int PlayFlag) //0 ���β���  1 ѭ�
 		//   printf("wavbuf.n = %d\n",wavbuf.n);
 		//��Ƶ
 		if (!OpenSnd(AUDIODSP1)) {
-			P_Debug("******StartPlayWav()****Open play sound device error!\n");
+			LOGD("******StartPlayWav()****Open play sound device error!\n");
 			AudioPlayIsStart = 0; //one key open door no sound
 			return;
 		}
@@ -1349,7 +1349,7 @@ void StartPlayWav(char *srcname, int PlayFlag) //0 ���β���  1 ѭ�
 				(void *) audio_play_wav_thread_func, (void *) PlayFlag);
 		pthread_attr_destroy(&attr);
 		if (audio_play_wav_thread == 0) {
-			P_Debug("can't create sound play thread!!!!!\n");
+			LOGD("can't create sound play thread!!!!!\n");
 			AudioPlayIsStart = 0;
 			return;
 		}
@@ -1363,7 +1363,7 @@ void StartPlayWav(char *srcname, int PlayFlag) //0 ���β���  1 ѭ�
 		AudioPlayIsStart = 0;
 #endif      
 	} else {
-		P_Debug("sound card is busy now!!!\n");
+		LOGD("sound card is busy now!!!\n");
 		return;
 	}
 #endif
@@ -1378,7 +1378,7 @@ void StopPlayWavFile(void) {
 	sprintf(acVolSet,"echo %d > /proc/asound/adda300_SPV",g_stIdbtCfg.iOutputCallVol); //�ָ�ԭ������ֵ
 	system(acVolSet);
 	sprintf(Local.DebugInfo, "XT debug LOCK AUDIO g_iOutputVol is :%s", acVolSet);
-	P_Debug(Local.DebugInfo);
+	LOGD(Local.DebugInfo);
 #endif
 }
 //---------------------------------------------------------------------------
@@ -1405,7 +1405,7 @@ void audio_play_wav_thread_func(int PlayFlag) {
 			sprintf(Local.DebugInfo,
 					"audio_play_wav_thread_func::dwSize = %d, AUDIOPLAYBLK = %d\n",
 					dwSize, AUDIOPLAYBLK);
-			P_Debug(Local.DebugInfo);
+			LOGD(Local.DebugInfo);
 		}
 		wavbuf.iget += AudioLen;
 
@@ -1440,7 +1440,7 @@ void audio_play_wav_thread_func(int PlayFlag) {
 	}
 
 	if (DebugMode == 1)
-		P_Debug("audio play wav thread exit now!!!!!!\n");
+		LOGD("audio play wav thread exit now!!!!!!\n");
 	AudioPlayIsStart = 0;
 }
 //---------------------------------------------------------------------------
@@ -1449,7 +1449,7 @@ TempAudioNode1 * init_audionode(void) //��ʼ��������ĺ��
 	TempAudioNode1 *h; // *h�����ͷ����ָ�룬*pָ��ǰ����ǰһ����㣬*sָ��ǰ���
 	if ((h = (TempAudioNode1 *) malloc(sizeof(TempAudioNode1))) == NULL) //����ռ䲢���
 			{
-		P_Debug("don't audio malloc!");
+		LOGD("don't audio malloc!");
 		return NULL;
 	}
 	h->llink = NULL; //������
@@ -1484,12 +1484,12 @@ int creat_audionode(TempAudioNode1 *h, struct talkdata1 talkdata,
 		//β�巨��������
 		if ((p = (TempAudioNode1 *) malloc(sizeof(TempAudioNode1))) == NULL) //����½��s���������ڴ�ռ�
 				{
-			P_Debug("don't malloc memory!\n");
+			LOGD("don't malloc memory!\n");
 			return 0;
 		}
 		if ((p->Content.buffer = (unsigned char *) malloc(talkdata.Framelen))
 				== NULL) {
-			P_Debug("don't malloc audio receive memory!\n");
+			LOGD("don't malloc audio receive memory!\n");
 			return 0;
 		}
 		p->Content.isFull = 0;
@@ -1571,7 +1571,7 @@ int delete_audionode(TempAudioNode1 *p) {
 		}
 		return (1);
 	} else
-		P_Debug("audio delete null\n");
+		LOGD("audio delete null\n");
 	return (0);
 }
 //---------------------------------------------------------------------------
@@ -1656,7 +1656,7 @@ TempAudioNode1 * find_audionode(TempAudioNode1 *h, int currframeno,
 			if (p->Content.CurrPackage[currpackage - 1] == 1) {
 				if (DebugMode == 1) {
 					sprintf(Local.DebugInfo, "pack exist %d\n", currframeno);
-					P_Debug(Local.DebugInfo);
+					LOGD(Local.DebugInfo);
 				}
 				PackIsExist = 1;
 			}

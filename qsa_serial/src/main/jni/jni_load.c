@@ -4,11 +4,8 @@
 
 #include "include/log_jni.h"
 #include "string.h"
-
-#define _Included_com_qsatalk_cinjava
-#include "code_c_in_java.h"
-#define _Included_com_qsatalk_javainc
-#include "code_java_in_c.h"
+#define _Included_com_qsaserial
+#include "qsa_serial/qsa_serial.h"
 
 #ifndef NULL
 #define NULL ((void *) 0)
@@ -29,7 +26,7 @@
 /*
  * 指定要注册的类，对应完整的java类名
  * */
-#define JNIREG_CLASS "com/qsatalk/jniLoad"
+#define JNIREG_CLASS "com/qsaserial/jniserialLoad"
 
 JNIEXPORT jint JNI_OnLoad(JavaVM * vm, void * reserved) {
     JNIEnv * env = NULL;
@@ -63,8 +60,7 @@ static int registerNativeMethods(JNIEnv *env, const char * className,
  * Java和JNI函数绑定
  * */
 static JNINativeMethod method_table[] = {
-        {"sendHello", "()Ljava/lang/String;", (void *)native_sendHello},
-        {"SayHelloInC", "(Ljava/lang/String;)Ljava/lang/String;", (void *)native_SayHelloInC},
+        {"init_serial_qsa", "()Ljava/lang/String;", (void *)native_init_serial_qsa},
 };
 
 /*

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/qsaTalk.iml" filepath="$PROJECT_DIR$/qsaTalk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/qsa_serial/qsa_serial.iml" filepath="$PROJECT_DIR$/qsa_serial/qsa_serial.iml" />
     </modules>
   </component>
 </project>
