@@ -5,7 +5,7 @@
 #include "include/log_jni.h"
 #include "string.h"
 #define _Included_com_qsaserial
-#include "qsa_serial/qsa_serial.h"
+#include "jni_qsa_serial.h"
 
 #ifndef NULL
 #define NULL ((void *) 0)

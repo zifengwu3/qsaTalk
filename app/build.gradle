@@ -7,7 +7,7 @@ model {
 
         defaultConfig.with {
             applicationId = "com.qsatalk"
-            minSdkVersion.apiLevel = 8
+            minSdkVersion.apiLevel = 7
             targetSdkVersion.apiLevel = 23
             versionCode = 1
             versionName = "1.0"
@@ -20,7 +20,6 @@ model {
         CFlags.addAll(["-I${file("src/main/jni/test")}".toString()])
         CFlags.addAll(["-I${file("src/main/jni/include")}".toString()])
         CFlags.addAll(["-I${file("src/main/jni/qsa_talk")}".toString()])
-        CFlags.addAll(["-I${file("src/main/jni/qsa_485")}".toString()])
     }
 
     android.sources {
@@ -57,6 +56,7 @@ model {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':qsa_serial')
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile files('src/main/libs/fastjson-1.2.5.jar')
 }

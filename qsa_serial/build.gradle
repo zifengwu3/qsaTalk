@@ -18,6 +18,7 @@ model {
         moduleName = "serial_qsa"
         ldLibs.addAll(["android", "log"])
         CFlags.addAll(["-I${file("src/main/jni/qsa_serial")}".toString()])
+        CFlags.addAll(["-I${file("src/main/jni/include")}".toString()])
     }
 
     android.sources {
