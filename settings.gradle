@@ -1,1 +1,1 @@
-include ':app', ':qsa_serial'
+include ':app'
